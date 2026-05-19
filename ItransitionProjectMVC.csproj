@@ -25,4 +25,11 @@
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.7" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Dtos\" />
+      <Folder Include="Interfaces\" />
+      <Folder Include="Mappers\" />
+      <Folder Include="Sevices\" />
+    </ItemGroup>
+
 </Project>
