@@ -1,0 +1,53 @@
+@model ItransitionProjectMVC.ViewModels.Account.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 shadow p-4 border rounded bg-white">
+            <h2 class="text-center mb-4">Создать аккаунт</h2>
+
+            <form asp-action="Register" method="post">
+                @* Выводит общие ошибки (например, "Email уже занят" или "Пароль слишком простой") *@
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label font-weight-bold">Имя пользователя</label>
+                    <input asp-for="UserName" class="form-control" placeholder="Введите никнейм" />
+                    <span asp-validation-for="UserName" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label font-weight-bold">Электронная почта</label>
+                    <input asp-for="Email" class="form-control" placeholder="example@mail.com" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label font-weight-bold">Пароль</label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label font-weight-bold">Подтвердите пароль</label>
+                    <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2">Зарегистрироваться</button>
+            </form>
+
+            <div class="mt-3 text-center">
+                <p>Уже есть аккаунт? <a asp-action="Login" class="text-decoration-none">Войти</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* Включает проверку полей прямо в браузере без перезагрузки *@
+    <partial name="_ValidationScriptsPartial" />
+}
