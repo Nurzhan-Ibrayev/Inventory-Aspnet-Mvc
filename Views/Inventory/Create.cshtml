@@ -6,45 +6,45 @@
 
 <div class="row justify-content-center">
 
-    <div class="col-xl-8 col-lg-10">
+    <div class="col-xl-10">
 
         <div class="card card-modern">
 
             <div class="card-body p-4 p-lg-5">
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="mb-5">
+                    <h1 class="page-title">
+                        Create Inventory
+                    </h1>
 
-                    <div>
-                        <h1 class="page-title mb-1">
-                            Create Inventory
-                        </h1>
-
-                        <p class="text-muted mb-0">
-                            Configure inventory settings and custom fields
-                        </p>
-                    </div>
-
+                    <p class="text-muted">
+                        Configure inventory information and custom item fields
+                    </p>
                 </div>
 
                 <form asp-action="Create" method="post">
 
-                    <div class="row g-4">
+                    <!-- BASIC INFO -->
 
-                        <!-- Title -->
+                    <div class="section-title">
+                        Basic Information
+                    </div>
+
+                    <div class="row g-4 mb-5">
+
                         <div class="col-12">
 
                             <label asp-for="Title" class="form-label fw-semibold"></label>
 
                             <input asp-for="Title"
                                    class="form-control form-control-lg"
-                                   placeholder="Enter inventory title" />
+                                   placeholder="Gaming Setup Collection" />
 
                             <span asp-validation-for="Title"
                                   class="text-danger small"></span>
 
                         </div>
 
-                        <!-- Description -->
                         <div class="col-12">
 
                             <label asp-for="Description"
@@ -53,11 +53,10 @@
                             <textarea asp-for="Description"
                                       rows="6"
                                       class="form-control"
-                                      placeholder="Supports Markdown"></textarea>
+                                      placeholder="Markdown supported..."></textarea>
 
                         </div>
 
-                        <!-- Category -->
                         <div class="col-md-6">
 
                             <label asp-for="CategoryId"
@@ -75,7 +74,6 @@
 
                         </div>
 
-                        <!-- Tags -->
                         <div class="col-md-6">
 
                             <label asp-for="Tags"
@@ -83,11 +81,10 @@
 
                             <input asp-for="Tags"
                                    class="form-control"
-                                   placeholder="laptop, office, tech" />
+                                   placeholder="tech, gaming, pc" />
 
                         </div>
 
-                        <!-- Image -->
                         <div class="col-12">
 
                             <label asp-for="ImageUrl"
@@ -101,10 +98,9 @@
 
                         </div>
 
-                        <!-- Public -->
                         <div class="col-12">
 
-                            <div class="form-check custom-checkbox">
+                            <div class="form-check modern-checkbox">
 
                                 <input asp-for="IsPublic"
                                        class="form-check-input" />
@@ -119,99 +115,234 @@
 
                     </div>
 
-                    <!-- Custom Fields -->
-                    <div class="mt-5">
+                    <!-- STRING FIELDS -->
 
-                        <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="section-title">
+                        String Fields
+                    </div>
 
-                            <div>
-                                <h3 class="fw-bold mb-1">
-                                    Custom Fields
-                                </h3>
+                    <div class="row g-4 mb-5">
 
-                                <p class="text-muted mb-0">
-                                    Configure dynamic fields for items
-                                </p>
-                            </div>
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="col-lg-4">
 
-                        </div>
+                                <div class="custom-field-card">
 
-                        <div class="row g-4">
+                                    <div class="field-badge">
+                                        String #@i
+                                    </div>
 
-                            @for (int i = 0; i < Model.CustomFields.Count; i++)
-                            {
-                                <div class="col-lg-6">
+                                    <div class="mb-3">
 
-                                    <div class="custom-field-card">
+                                        <label class="form-label fw-semibold">
+                                            Field Name
+                                        </label>
 
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <input name="CustomString@(i)Name"
+                                               value="@ViewData.Model?.GetType().GetProperty($"CustomString{i}Name")?.GetValue(Model)"
+                                               class="form-control"
+                                               placeholder="CPU / Brand / Color" />
 
-                                            <span class="badge bg-dark px-3 py-2">
-                                                @Model.CustomFields[i].Type
-                                            </span>
+                                    </div>
 
-                                            <small class="text-muted">
-                                                Field #@Model.CustomFields[i].Index
-                                            </small>
+                                    <div>
 
-                                        </div>
+                                        <label class="form-label fw-semibold">
+                                            Visibility
+                                        </label>
 
-                                        <input type="hidden"
-                                               asp-for="CustomFields[i].Type" />
+                                        <select name="CustomString@(i)State"
+                                                class="form-select">
 
-                                        <input type="hidden"
-                                               asp-for="CustomFields[i].Index" />
+                                            <option value="Hidden">Hidden</option>
+                                            <option value="Optional">Optional</option>
+                                            <option value="Required">Required</option>
 
-                                        <!-- Name -->
-                                        <div class="mb-3">
-
-                                            <label class="form-label fw-semibold">
-                                                Field Name
-                                            </label>
-
-                                            <input asp-for="CustomFields[i].Name"
-                                                   class="form-control"
-                                                   placeholder="Enter field name" />
-
-                                        </div>
-
-                                        <!-- State -->
-                                        <div>
-
-                                            <label class="form-label fw-semibold">
-                                                State
-                                            </label>
-
-                                            <select asp-for="CustomFields[i].State"
-                                                    class="form-select">
-
-                                                <option value="Hidden">
-                                                    Hidden
-                                                </option>
-
-                                                <option value="Optional">
-                                                    Optional
-                                                </option>
-
-                                                <option value="Required">
-                                                    Required
-                                                </option>
-
-                                            </select>
-
-                                        </div>
+                                        </select>
 
                                     </div>
 
                                 </div>
-                            }
 
-                        </div>
+                            </div>
+                        }
 
                     </div>
 
-                    <!-- Submit -->
-                    <div class="mt-5 d-flex gap-3">
+                    <!-- MULTILINE -->
+
+                    <div class="section-title">
+                        Multiline Text Fields
+                    </div>
+
+                    <div class="row g-4 mb-5">
+
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="col-lg-4">
+
+                                <div class="custom-field-card">
+
+                                    <div class="field-badge">
+                                        Text #@i
+                                    </div>
+
+                                    <div class="mb-3">
+
+                                        <label class="form-label fw-semibold">
+                                            Field Name
+                                        </label>
+
+                                        <input name="CustomMultiline@(i)Name"
+                                               class="form-control"
+                                               placeholder="Description / Notes" />
+
+                                    </div>
+
+                                    <select name="CustomMultiline@(i)State"
+                                            class="form-select">
+
+                                        <option value="Hidden">Hidden</option>
+                                        <option value="Optional">Optional</option>
+                                        <option value="Required">Required</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                    <!-- NUMBER -->
+
+                    <div class="section-title">
+                        Numeric Fields
+                    </div>
+
+                    <div class="row g-4 mb-5">
+
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="col-lg-4">
+
+                                <div class="custom-field-card">
+
+                                    <div class="field-badge">
+                                        Number #@i
+                                    </div>
+
+                                    <div class="mb-3">
+
+                                        <input name="CustomInt@(i)Name"
+                                               class="form-control"
+                                               placeholder="Price / Year / Weight" />
+
+                                    </div>
+
+                                    <select name="CustomInt@(i)State"
+                                            class="form-select">
+
+                                        <option value="Hidden">Hidden</option>
+                                        <option value="Optional">Optional</option>
+                                        <option value="Required">Required</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                    <!-- BOOL -->
+
+                    <div class="section-title">
+                        Boolean Fields
+                    </div>
+
+                    <div class="row g-4 mb-5">
+
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="col-lg-4">
+
+                                <div class="custom-field-card">
+
+                                    <div class="field-badge">
+                                        Checkbox #@i
+                                    </div>
+
+                                    <div class="mb-3">
+
+                                        <input name="CustomBool@(i)Name"
+                                               class="form-control"
+                                               placeholder="Available / Used" />
+
+                                    </div>
+
+                                    <select name="CustomBool@(i)State"
+                                            class="form-select">
+
+                                        <option value="Hidden">Hidden</option>
+                                        <option value="Optional">Optional</option>
+                                        <option value="Required">Required</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                    <!-- LINKS -->
+
+                    <div class="section-title">
+                        Link Fields
+                    </div>
+
+                    <div class="row g-4 mb-5">
+
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="col-lg-4">
+
+                                <div class="custom-field-card">
+
+                                    <div class="field-badge">
+                                        Link #@i
+                                    </div>
+
+                                    <div class="mb-3">
+
+                                        <input name="CustomLink@(i)Name"
+                                               class="form-control"
+                                               placeholder="Manual / Website" />
+
+                                    </div>
+
+                                    <select name="CustomLink@(i)State"
+                                            class="form-select">
+
+                                        <option value="Hidden">Hidden</option>
+                                        <option value="Optional">Optional</option>
+                                        <option value="Required">Required</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                    <div class="d-flex gap-3 mt-5">
 
                         <button type="submit"
                                 class="btn btn-dark btn-modern flex-grow-1">

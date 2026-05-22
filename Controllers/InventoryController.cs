@@ -18,20 +18,6 @@ public class InventoryController:Controller
     public IActionResult Create()
     {
         var vm = new CreateInventoryViewModel();
-        vm.CustomFields = new List<CustomFieldSettingViewModel>
-        {
-            new() { Type = "String", Index = 1 },
-            new() { Type = "String", Index = 2 },
-            new() { Type = "String", Index = 3 },
-
-            new() { Type = "Text", Index = 1 },
-            new() { Type = "Text", Index = 2 },
-            new() { Type = "Text", Index = 3 },
-
-            new() { Type = "Number", Index = 1 },
-            new() { Type = "Number", Index = 2 },
-            new() { Type = "Number", Index = 3 }
-        };
 
         return View(vm);
     }
