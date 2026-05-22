@@ -31,6 +31,7 @@ public class AppDBContext : IdentityDbContext<AppUser>
         // ── Inventory ────────────────────────────────────────────────────
         mb.Entity<Inventory>(e =>
         {
+         
          e.HasOne(i => i.Creator)
           .WithMany(u => u.OwnedInventories)
           .HasForeignKey(i => i.CreatorId)

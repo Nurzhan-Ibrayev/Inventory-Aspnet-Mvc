@@ -1,25 +1,30 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ItransitionProjectMVC.Models;
+namespace ItransitionProjectMVC.ViewModels.Inventory;
 
-public class Inventory
+public class UpdateInventoryViewModel
 {
     public int Id { get; set; }
-
-    [Required, MaxLength(256)]
+    [Required(ErrorMessage = "Название обязательно")]
+    [Display(Name = "Название инвентаря")]
     public string Title { get; set; } = string.Empty;
+
+    [Display(Name = "Описание (поддерживает Markdown)")]
     public string? Description { get; set; }
 
-    [MaxLength(1024)]
-    public string? ImageUrl { get; set; }
-
-    public string CreatorId { get; set; }
-
+    [Display(Name = "Категория")]
     public int? CategoryId { get; set; }
+    
+    public IEnumerable<SelectListItem>? Categories { get; set; }
 
-    public bool IsPublic { get; set; } = false;
+    [Display(Name = "Сделать публичным (все могут добавлять айтемы)")]
+    public bool IsPublic { get; set; }
 
+    [Display(Name = "Теги (через запятую)")]
+    public string Tags { get; set; } = string.Empty;
+
+    public string? ImageUrl { get; set; }
     // ── Custom string fields (single-line) ──────────────────────────
     [MaxLength(256)] public string? CustomString1Name { get; set; }
     [MaxLength(20)]  public string? CustomString1State { get; set; }
@@ -70,18 +75,5 @@ public class Inventory
     [MaxLength(256)] public string? CustomLink3Name { get; set; }
     [MaxLength(20)]  public string? CustomLink3State { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
-
-    [ForeignKey(nameof(CreatorId))]
-    public AppUser Creator { get; set; }
-
-    [ForeignKey(nameof(CategoryId))]
-    public Category? Category { get; set; }
-
-    public ICollection<Item> Items { get; set; } = [];
-    public ICollection<Comment> Comments { get; set; } = [];
-    public ICollection<InventoryAccess> AccessList { get; set; } = [];
-    public ICollection<InventoryTag> InventoryTags { get; set; } = [];
+    // public string CustomIdFormat { get; set; } = "Sequence";
 }

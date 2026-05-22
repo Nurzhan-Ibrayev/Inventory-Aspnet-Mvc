@@ -13,6 +13,7 @@ public class InventoryController:Controller
     {
         _inventoryService = inventoryService;
     }
+    
     [HttpGet]
     [Authorize]
     public IActionResult Create()
@@ -21,17 +22,55 @@ public class InventoryController:Controller
 
         return View(vm);
     }
+    
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateInventoryViewModel model)
+    public async Task<IActionResult> Create(CreateInventoryViewModel viewModel)
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return View(viewModel);
         }
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var inventory = await _inventoryService.CreateInventoryAsync(model, userId);
+        await _inventoryService.CreateInventoryAsync(viewModel, userId);
+        return RedirectToAction("Index");
+    }
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var vm = await _inventoryService.UpdateGetInventoryAsync(id);
+        return View(vm);
+    }
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(UpdateInventoryViewModel viewModel, int id)
+    {
+        Console.WriteLine($">>> Edit POST: id={id}, viewModel.Id={viewModel.Id}, Title={viewModel.Title}");
+    
+        if (!ModelState.IsValid)
+        {
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                Console.WriteLine($">>> ModelState error: {error.ErrorMessage}");
+            return View(viewModel);
+        }
+    
+        await _inventoryService.UpdateInventoryAsync(viewModel, id);
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
+        await _inventoryService.DeleteInventoryAsync(id);
         return RedirectToAction("Index");
     }
 }

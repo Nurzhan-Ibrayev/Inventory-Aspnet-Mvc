@@ -22,14 +22,46 @@ public class InventoryService:IInventoryService
         var inventories = await _inventoryRepository.GetAllAsync();
         return _mapper.Map<List<InventoryViewModel>>(inventories);
     }   
+    public async Task<InventoryViewModel> GetByIdInventoryAsync(int id)
+    {
+        var inventory = await _inventoryRepository.GetByIdAsync(id);
+        return _mapper.Map<InventoryViewModel>(inventory);
+    } 
 
-    public async Task<InventoryViewModel> CreateInventoryAsync(CreateInventoryViewModel inventoryViewModel, string userId)
+    public async Task CreateInventoryAsync(CreateInventoryViewModel inventoryViewModel, string userId)
     {
         var inventoryModel = _mapper.Map<Inventory>(inventoryViewModel);
         inventoryModel.CreatorId = userId;
         await _inventoryRepository.AddAsync(inventoryModel);
-        return _mapper.Map<InventoryViewModel>(inventoryModel);
     }
+
+    public async Task<UpdateInventoryViewModel> UpdateGetInventoryAsync(int id)
+    {
+        var inventory = await _inventoryRepository.GetByIdAsync(id);
+        return _mapper.Map<UpdateInventoryViewModel>(inventory);
+    }
+    public async Task UpdateInventoryAsync(UpdateInventoryViewModel inventoryViewModel, int id)
+    {
+        var inventoryModel = await _inventoryRepository.GetByIdAsync(id);
+        if (inventoryModel == null)
+            throw new Exception("Inventory not found");
+
+        Console.WriteLine($"BEFORE: Title={inventoryModel.Title}, IsPublic={inventoryModel.IsPublic}");
     
+        _mapper.Map(inventoryViewModel, inventoryModel);
+    
+        Console.WriteLine($"AFTER: Title={inventoryModel.Title}, IsPublic={inventoryModel.IsPublic}");
+    
+        await _inventoryRepository.UpdateAsync();
+    }
+    public async Task DeleteInventoryAsync(int id)
+    {
+        var inventoryModel = await _inventoryRepository.GetByIdAsync(id);
+        if (inventoryModel == null)
+        {
+            throw new Exception("Inventory not found");
+        }
+        await _inventoryRepository.DeleteAsync(inventoryModel);
+    }
     
 }

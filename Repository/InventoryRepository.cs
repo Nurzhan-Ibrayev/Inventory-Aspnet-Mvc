@@ -20,9 +20,9 @@ public class InventoryRepository:IInventoryRepository
 
     public async Task<Inventory?> GetByIdAsync(int id)
     {
-        return await _context.Inventories.FindAsync(id);
+        return await _context.Inventories.FirstOrDefaultAsync(x => x.Id == id);
     }
-
+    
     public async Task<Inventory> AddAsync(Inventory inventoryModel)
     {
         await _context.AddAsync(inventoryModel);
@@ -30,4 +30,15 @@ public class InventoryRepository:IInventoryRepository
         return inventoryModel;
     }
 
+    public async Task UpdateAsync()
+    {
+        
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Inventory inventoryModel)
+    {
+        _context.Inventories.Remove(inventoryModel);
+        await _context.SaveChangesAsync();
+    }
 }

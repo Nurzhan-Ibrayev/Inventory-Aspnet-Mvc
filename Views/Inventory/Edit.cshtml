@@ -1,0 +1,254 @@
+@model ItransitionProjectMVC.ViewModels.Inventory.UpdateInventoryViewModel
+
+@{
+    ViewData["Title"] = "Edit Inventory";
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-xl-10">
+
+        <div class="card card-modern">
+
+            <div class="card-body p-4 p-lg-5">
+
+                <div class="d-flex justify-content-between align-items-start mb-5">
+
+                    <div>
+                        <h1 class="page-title">
+                            Edit Inventory
+                        </h1>
+
+                        <p class="text-muted">
+                            Update inventory settings and custom fields
+                        </p>
+                    </div>
+
+                    <!-- DELETE BUTTON -->
+
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn btn-danger btn-modern"
+                                onclick="return confirm('Delete this inventory?')">
+
+                            Delete
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <!-- EDIT FORM -->
+
+                <form asp-action="Edit"
+                      asp-route-id="@Model.Id"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+
+                    <!-- BASIC INFO -->
+
+                    <div class="section-title">
+                        Basic Information
+                    </div>
+
+                    <div class="row g-4 mb-5">
+
+                        <div class="col-12">
+
+                            <label asp-for="Title"
+                                   class="form-label fw-semibold"></label>
+
+                            <input asp-for="Title"
+                                   class="form-control form-control-lg" />
+
+                            <span asp-validation-for="Title"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label asp-for="Description"
+                                   class="form-label fw-semibold"></label>
+
+                            <textarea asp-for="Description"
+                                      rows="6"
+                                      class="form-control"></textarea>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label asp-for="CategoryId"
+                                   class="form-label fw-semibold"></label>
+
+                            <select asp-for="CategoryId"
+                                    asp-items="Model.Categories"
+                                    class="form-select">
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label asp-for="Tags"
+                                   class="form-label fw-semibold"></label>
+
+                            <input asp-for="Tags"
+                                   class="form-control" />
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label asp-for="ImageUrl"
+                                   class="form-label fw-semibold"></label>
+
+                            <input asp-for="ImageUrl"
+                                   class="form-control" />
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <div class="form-check modern-checkbox">
+
+                                <input asp-for="IsPublic"
+                                       class="form-check-input" />
+
+                                <label asp-for="IsPublic"
+                                       class="form-check-label fw-semibold"></label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- STRING FIELDS -->
+
+                    <div class="section-title">
+                        String Fields
+                    </div>
+
+                    <div class="row g-4 mb-5">
+
+                        <div class="col-lg-4">
+
+                            <div class="custom-field-card">
+
+                                <div class="field-badge">
+                                    String #1
+                                </div>
+
+                                <input asp-for="CustomString1Name"
+                                       class="form-control mb-3" />
+
+                                <select asp-for="CustomString1State"
+                                        class="form-select">
+
+                                    <option value="Hidden">Hidden</option>
+                                    <option value="Optional">Optional</option>
+                                    <option value="Required">Required</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-4">
+
+                            <div class="custom-field-card">
+
+                                <div class="field-badge">
+                                    String #2
+                                </div>
+
+                                <input asp-for="CustomString2Name"
+                                       class="form-control mb-3" />
+
+                                <select asp-for="CustomString2State"
+                                        class="form-select">
+
+                                    <option value="Hidden">Hidden</option>
+                                    <option value="Optional">Optional</option>
+                                    <option value="Required">Required</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-4">
+
+                            <div class="custom-field-card">
+
+                                <div class="field-badge">
+                                    String #3
+                                </div>
+
+                                <input asp-for="CustomString3Name"
+                                       class="form-control mb-3" />
+
+                                <select asp-for="CustomString3State"
+                                        class="form-select">
+
+                                    <option value="Hidden">Hidden</option>
+                                    <option value="Optional">Optional</option>
+                                    <option value="Required">Required</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SAVE -->
+
+                    <div class="d-flex gap-3 mt-5">
+
+                        <button type="submit"
+                                class="btn btn-dark btn-modern flex-grow-1">
+
+                            Save Changes
+
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary btn-modern">
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

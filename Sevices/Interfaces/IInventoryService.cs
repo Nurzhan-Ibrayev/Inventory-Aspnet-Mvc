@@ -5,5 +5,10 @@ namespace ItransitionProjectMVC.Sevices.Interfaces;
 public interface IInventoryService
 {
     Task<List<InventoryViewModel>> GetAllInventoryAsync();
-    Task<InventoryViewModel> CreateInventoryAsync(CreateInventoryViewModel inventoryViewModel,  string userId);
+    Task<InventoryViewModel> GetByIdInventoryAsync(int id);
+    Task CreateInventoryAsync(CreateInventoryViewModel inventoryViewModel,  string userId);
+    Task<UpdateInventoryViewModel> UpdateGetInventoryAsync(int id);
+    Task UpdateInventoryAsync(UpdateInventoryViewModel inventoryViewModel, int id);
+    Task DeleteInventoryAsync(int id);
+
 }

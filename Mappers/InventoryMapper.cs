@@ -10,5 +10,7 @@ public class InventoryMapper:Profile
     {
         CreateMap<Inventory, InventoryViewModel>();
         CreateMap<CreateInventoryViewModel, Inventory>();
+        CreateMap<UpdateInventoryViewModel, Inventory>();
+        CreateMap<Inventory, UpdateInventoryViewModel>();
     }
 }
