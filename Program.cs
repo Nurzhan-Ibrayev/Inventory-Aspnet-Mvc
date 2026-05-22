@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 using ItransitionProjectMVC.Data;
 using ItransitionProjectMVC.Models;
+using ItransitionProjectMVC.Repository;
+using ItransitionProjectMVC.Repository.Interfaces;
+using ItransitionProjectMVC.Sevices;
+using ItransitionProjectMVC.Sevices.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +32,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<AppDBContext>();
 
 builder.Services.AddAuthentication().AddJwtBearer();
-
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 var app = builder.Build();
 

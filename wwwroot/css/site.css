@@ -1,31 +1,49 @@
-html {
-  font-size: 14px;
+body.app-bg {
+  background: #f5f7fb;
+  color: #1f2937;
+  font-family: Inter, sans-serif;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.app-navbar {
+  background: #111827;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.card-modern {
+  border: none;
+  border-radius: 18px;
+  box-shadow:
+          0 4px 20px rgba(0,0,0,0.05);
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.btn-modern {
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 600;
 }
 
-body {
-  margin-bottom: 60px;
+.form-control,
+.form-select {
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.form-control:focus,
+.form-select:focus {
+  box-shadow: none;
+  border-color: #111827;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.inventory-card {
+  transition: 0.2s ease;
+}
+
+.inventory-card:hover {
+  transform: translateY(-3px);
 }

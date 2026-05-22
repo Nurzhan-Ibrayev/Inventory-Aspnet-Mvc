@@ -31,20 +31,18 @@ public class AppDBContext : IdentityDbContext<AppUser>
         // ── Inventory ────────────────────────────────────────────────────
         mb.Entity<Inventory>(e =>
         {
-            e.HasOne(i => i.Creator)
-             .WithMany(u => u.OwnedInventories)
-             .HasForeignKey(i => i.CreatorId)
-             .OnDelete(DeleteBehavior.Cascade);
- 
-            e.HasOne(i => i.Category)
-             .WithMany(c => c.Inventories)
-             .HasForeignKey(i => i.CategoryId)
-             .OnDelete(DeleteBehavior.SetNull);
- 
-            // Full-text search index on title + description (SQL Server syntax;
-            // for PostgreSQL replace with HasIndex + IsTsVectorComputedColumn)
-            e.HasIndex(i => new { i.Title, i.Description })
-             .HasDatabaseName("IX_Inventories_FullText");
+         e.HasOne(i => i.Creator)
+          .WithMany(u => u.OwnedInventories)
+          .HasForeignKey(i => i.CreatorId)
+          .OnDelete(DeleteBehavior.Cascade);
+
+         e.HasOne(i => i.Category)
+          .WithMany(c => c.Inventories)
+          .HasForeignKey(i => i.CategoryId)
+          .OnDelete(DeleteBehavior.SetNull);
+
+         e.HasIndex(i => new { i.Title, i.Description })
+          .HasDatabaseName("IX_Inventories_FullText");
         });
  
      

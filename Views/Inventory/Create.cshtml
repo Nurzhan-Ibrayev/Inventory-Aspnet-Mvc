@@ -1,0 +1,246 @@
+@model ItransitionProjectMVC.ViewModels.Inventory.CreateInventoryViewModel
+
+@{
+    ViewData["Title"] = "Create Inventory";
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-xl-8 col-lg-10">
+
+        <div class="card card-modern">
+
+            <div class="card-body p-4 p-lg-5">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+                        <h1 class="page-title mb-1">
+                            Create Inventory
+                        </h1>
+
+                        <p class="text-muted mb-0">
+                            Configure inventory settings and custom fields
+                        </p>
+                    </div>
+
+                </div>
+
+                <form asp-action="Create" method="post">
+
+                    <div class="row g-4">
+
+                        <!-- Title -->
+                        <div class="col-12">
+
+                            <label asp-for="Title" class="form-label fw-semibold"></label>
+
+                            <input asp-for="Title"
+                                   class="form-control form-control-lg"
+                                   placeholder="Enter inventory title" />
+
+                            <span asp-validation-for="Title"
+                                  class="text-danger small"></span>
+
+                        </div>
+
+                        <!-- Description -->
+                        <div class="col-12">
+
+                            <label asp-for="Description"
+                                   class="form-label fw-semibold"></label>
+
+                            <textarea asp-for="Description"
+                                      rows="6"
+                                      class="form-control"
+                                      placeholder="Supports Markdown"></textarea>
+
+                        </div>
+
+                        <!-- Category -->
+                        <div class="col-md-6">
+
+                            <label asp-for="CategoryId"
+                                   class="form-label fw-semibold"></label>
+
+                            <select asp-for="CategoryId"
+                                    asp-items="Model.Categories"
+                                    class="form-select">
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="col-md-6">
+
+                            <label asp-for="Tags"
+                                   class="form-label fw-semibold"></label>
+
+                            <input asp-for="Tags"
+                                   class="form-control"
+                                   placeholder="laptop, office, tech" />
+
+                        </div>
+
+                        <!-- Image -->
+                        <div class="col-12">
+
+                            <label asp-for="ImageUrl"
+                                   class="form-label fw-semibold">
+                                Image URL
+                            </label>
+
+                            <input asp-for="ImageUrl"
+                                   class="form-control"
+                                   placeholder="https://..." />
+
+                        </div>
+
+                        <!-- Public -->
+                        <div class="col-12">
+
+                            <div class="form-check custom-checkbox">
+
+                                <input asp-for="IsPublic"
+                                       class="form-check-input" />
+
+                                <label asp-for="IsPublic"
+                                       class="form-check-label fw-semibold">
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Custom Fields -->
+                    <div class="mt-5">
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+
+                            <div>
+                                <h3 class="fw-bold mb-1">
+                                    Custom Fields
+                                </h3>
+
+                                <p class="text-muted mb-0">
+                                    Configure dynamic fields for items
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="row g-4">
+
+                            @for (int i = 0; i < Model.CustomFields.Count; i++)
+                            {
+                                <div class="col-lg-6">
+
+                                    <div class="custom-field-card">
+
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                            <span class="badge bg-dark px-3 py-2">
+                                                @Model.CustomFields[i].Type
+                                            </span>
+
+                                            <small class="text-muted">
+                                                Field #@Model.CustomFields[i].Index
+                                            </small>
+
+                                        </div>
+
+                                        <input type="hidden"
+                                               asp-for="CustomFields[i].Type" />
+
+                                        <input type="hidden"
+                                               asp-for="CustomFields[i].Index" />
+
+                                        <!-- Name -->
+                                        <div class="mb-3">
+
+                                            <label class="form-label fw-semibold">
+                                                Field Name
+                                            </label>
+
+                                            <input asp-for="CustomFields[i].Name"
+                                                   class="form-control"
+                                                   placeholder="Enter field name" />
+
+                                        </div>
+
+                                        <!-- State -->
+                                        <div>
+
+                                            <label class="form-label fw-semibold">
+                                                State
+                                            </label>
+
+                                            <select asp-for="CustomFields[i].State"
+                                                    class="form-select">
+
+                                                <option value="Hidden">
+                                                    Hidden
+                                                </option>
+
+                                                <option value="Optional">
+                                                    Optional
+                                                </option>
+
+                                                <option value="Required">
+                                                    Required
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="mt-5 d-flex gap-3">
+
+                        <button type="submit"
+                                class="btn btn-dark btn-modern flex-grow-1">
+
+                            Create Inventory
+
+                        </button>
+
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="btn btn-outline-secondary btn-modern">
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

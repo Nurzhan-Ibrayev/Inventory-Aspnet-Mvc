@@ -74,7 +74,7 @@ public class Inventory
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     [Timestamp]
-    public byte[] RowVersion { get; set; } = [];
+    public uint xmin { get; set; }
 
     [ForeignKey(nameof(CreatorId))]
     public AppUser Creator { get; set; }

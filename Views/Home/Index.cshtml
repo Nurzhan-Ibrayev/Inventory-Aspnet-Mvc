@@ -1,8 +1,49 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<ItransitionProjectMVC.ViewModels.Inventory.InventoryViewModel>
+
+@{
+    ViewData["Title"] = "Список инвентарей";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6">Доступные инвентари</h1>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Inventory" asp-action="Create" class="btn btn-success shadow-sm">
+                <i class="bi bi-plus-circle"></i> Создать новый
+            </a>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-light text-center border py-5">
+            <p class="text-muted mb-0">Пока ничего не создано. Будьте первым!</p>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">@item.Title</h5>
+                            <p class="card-text text-secondary text-truncate-3">
+                                @item.Description
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 pb-3">
+                            @* Stretched link делает всю карточку кликабельной по условию задачи *@
+                            <a asp-controller="Inventory" asp-action="Details" asp-route-id="@item.Id" 
+                               class="btn btn-outline-primary btn-sm w-100 stretched-link">
+                                Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
