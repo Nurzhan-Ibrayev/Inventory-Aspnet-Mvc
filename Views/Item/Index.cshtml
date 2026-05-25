@@ -1,0 +1,298 @@
+@model ItransitionProjectMVC.ViewModels.Item.InventoryItemsViewModel
+
+@{
+    ViewData["Title"] = Model.InventoryTitle;
+
+    // Собираем только активные поля
+    var activeFields = new List<(string Name, string Type, int Index)>();
+    var fieldGroups = new[]
+    {
+        ("String",    new[] { Model.CustomString1Name,    Model.CustomString2Name,    Model.CustomString3Name    },
+                      new[] { Model.CustomString1State,   Model.CustomString2State,   Model.CustomString3State   }),
+        ("Multiline", new[] { Model.CustomMultiline1Name, Model.CustomMultiline2Name, Model.CustomMultiline3Name },
+                      new[] { Model.CustomMultiline1State,Model.CustomMultiline2State,Model.CustomMultiline3State }),
+        ("Int",       new[] { Model.CustomInt1Name,       Model.CustomInt2Name,       Model.CustomInt3Name       },
+                      new[] { Model.CustomInt1State,      Model.CustomInt2State,      Model.CustomInt3State      }),
+        ("Bool",      new[] { Model.CustomBool1Name,      Model.CustomBool2Name,      Model.CustomBool3Name      },
+                      new[] { Model.CustomBool1State,     Model.CustomBool2State,     Model.CustomBool3State     }),
+        ("Link",      new[] { Model.CustomLink1Name,      Model.CustomLink2Name,      Model.CustomLink3Name      },
+                      new[] { Model.CustomLink1State,     Model.CustomLink2State,     Model.CustomLink3State     }),
+    };
+
+    foreach (var (type, names, states) in fieldGroups)
+        for (int i = 0; i < 3; i++)
+            if (!string.IsNullOrWhiteSpace(names[i]) && states[i] != "Hidden")
+                activeFields.Add((names[i]!, type, i + 1));
+}
+
+<style>
+    .inventory-header {
+        background: var(--bs-body-bg);
+        border-bottom: 2px solid var(--bs-border-color);
+        padding: 2rem 0 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .inventory-meta span {
+        font-size: .8rem;
+        color: var(--bs-secondary-color);
+        margin-right: 1.25rem;
+    }
+
+    .inventory-meta i { margin-right: .3rem; }
+
+    .items-table thead th {
+        font-size: .72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        color: var(--bs-secondary-color);
+        border-bottom: 2px solid var(--bs-border-color);
+        white-space: nowrap;
+        padding: .75rem 1rem;
+    }
+
+    .items-table tbody tr {
+        transition: background .15s;
+        cursor: pointer;
+    }
+
+    .items-table tbody tr:hover { background: var(--bs-tertiary-bg); }
+
+    .items-table td {
+        padding: .75rem 1rem;
+        vertical-align: middle;
+        font-size: .9rem;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .custom-id-badge {
+        font-family: 'Courier New', monospace;
+        font-size: .78rem;
+        font-weight: 700;
+        background: var(--bs-secondary-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: 6px;
+        padding: .2rem .55rem;
+        letter-spacing: .03em;
+    }
+
+    .row-actions {
+        display: flex;
+        gap: .4rem;
+        opacity: 0;
+        transition: opacity .15s;
+    }
+
+    tr:hover .row-actions { opacity: 1; }
+
+    .btn-row {
+        padding: .2rem .55rem;
+        font-size: .78rem;
+        border-radius: 6px;
+        font-weight: 600;
+        border: 1px solid transparent;
+    }
+
+    .btn-row-edit {
+        background: var(--bs-secondary-bg);
+        border-color: var(--bs-border-color);
+        color: var(--bs-body-color);
+    }
+
+    .btn-row-edit:hover { background: var(--bs-tertiary-bg); }
+
+    .btn-row-delete {
+        background: transparent;
+        border-color: var(--bs-danger);
+        color: var(--bs-danger);
+    }
+
+    .btn-row-delete:hover {
+        background: var(--bs-danger);
+        color: #fff;
+    }
+
+    .empty-state {
+        padding: 5rem 2rem;
+        text-align: center;
+        color: var(--bs-secondary-color);
+    }
+
+    .empty-state svg {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 1.25rem;
+        opacity: .35;
+    }
+
+    .bool-yes { color: #22c55e; font-weight: 700; }
+    .bool-no  { color: var(--bs-secondary-color); }
+</style>
+
+<!-- HEADER -->
+<div class="inventory-header">
+    <div class="container-fluid px-4">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+            <div>
+                <nav aria-label="breadcrumb" class="mb-2">
+                    <ol class="breadcrumb mb-0" style="font-size:.82rem">
+                        <li class="breadcrumb-item">
+                            <a asp-controller="Home" asp-action="Index">Inventories</a>
+                        </li>
+                        <li class="breadcrumb-item active">@Model.InventoryTitle</li>
+                    </ol>
+                </nav>
+                <h1 class="page-title mb-2">@Model.InventoryTitle</h1>
+                <div class="inventory-meta">
+                    <span><i class="bi bi-box"></i>@Model.Items.Count items</span>
+                    <span><i class="bi bi-columns"></i>@activeFields.Count active fields</span>
+                </div>
+            </div>
+
+            @if (Model.CanEdit)
+            {
+                <a asp-controller="Item"
+                   asp-action="Create"
+                   asp-route-inventoryId="@Model.InventoryId"
+                   class="btn btn-dark btn-modern">
+                    + Add Item
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- TABLE -->
+<div class="container-fluid px-4">
+    <div class="card card-modern">
+        <div class="card-body p-0">
+
+            @if (!Model.Items.Any())
+            {
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                        <path d="M16 3H8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"/>
+                    </svg>
+                    <p class="fw-semibold mb-1">No items yet</p>
+                    <p class="small mb-0">
+                        @if (Model.CanEdit)
+                        {
+                            <a asp-controller="Item"
+                               asp-action="Create"
+                               asp-route-inventoryId="@Model.InventoryId">
+                                Add the first item
+                            </a>
+                        }
+                        else
+                        {
+                            <span>Items will appear here once added.</span>
+                        }
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table items-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                @foreach (var f in activeFields)
+                                {
+                                    <th>@f.Name</th>
+                                }
+                                <th>Added by</th>
+                                <th>Date</th>
+                                @if (Model.CanEdit)
+                                {
+                                    <th></th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr onclick="window.location='@Url.Action("Edit", "Item", new { id = item.Id })'">
+                                    <td><span class="custom-id-badge">@item.CustomId</span></td>
+
+                                    @foreach (var f in activeFields)
+                                    {
+                                        <td>
+                                            @{
+                                                var val = f.Type switch
+                                                {
+                                                    "String"    => f.Index switch { 1 => item.CustomString1Value,    2 => item.CustomString2Value,    _ => item.CustomString3Value    },
+                                                    "Multiline" => f.Index switch { 1 => item.CustomMultiline1Value, 2 => item.CustomMultiline2Value, _ => item.CustomMultiline3Value },
+                                                    "Int"       => f.Index switch { 1 => item.CustomInt1Value?.ToString(),    2 => item.CustomInt2Value?.ToString(),    _ => item.CustomInt3Value?.ToString()    },
+                                                    "Link"      => f.Index switch { 1 => item.CustomLink1Value,      2 => item.CustomLink2Value,      _ => item.CustomLink3Value      },
+                                                    "Bool"      => null,
+                                                    _           => null
+                                                };
+                                            }
+
+                                            @if (f.Type == "Bool")
+                                            {
+                                                var bval = f.Index switch { 1 => item.CustomBool1Value, 2 => item.CustomBool2Value, _ => item.CustomBool3Value };
+                                                if (bval == true)
+                                                {
+                                                    <span class="bool-yes">✓</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="bool-no">—</span>
+                                                }
+                                            }
+                                            else if (f.Type == "Link" && !string.IsNullOrWhiteSpace(val))
+                                            {
+                                                <a href="@val" target="_blank" onclick="event.stopPropagation()">
+                                                    Link ↗
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                @(val ?? "—")
+                                            }
+                                        </td>
+                                    }
+
+                                    <td>@item.CreatedByUsername</td>
+                                    <td>@item.CreatedAt.ToString("dd MMM yyyy")</td>
+
+                                    @if (Model.CanEdit)
+                                    {
+                                        <td onclick="event.stopPropagation()">
+                                            <div class="row-actions">
+                                                <a asp-controller="Item"
+                                                   asp-action="Edit"
+                                                   asp-route-id="@item.Id"
+                                                   class="btn-row btn-row-edit">
+                                                    Edit
+                                                </a>
+
+                                                <form asp-controller="Item"
+                                                      asp-action="Delete"
+                                                      method="post"
+                                                      onsubmit="return confirm('Delete this item?')">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.Id" />
+                                                    <input type="hidden" name="inventoryId" value="@Model.InventoryId" />
+                                                    <button type="submit" class="btn-row btn-row-delete">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

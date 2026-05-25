@@ -11,6 +11,10 @@ public class InventoryMapper:Profile
         CreateMap<Inventory, InventoryViewModel>();
         CreateMap<CreateInventoryViewModel, Inventory>();
         CreateMap<UpdateInventoryViewModel, Inventory>();
-        CreateMap<Inventory, UpdateInventoryViewModel>();
+        CreateMap<Inventory, UpdateInventoryViewModel>()
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src =>
+                string.Join(", ", src.InventoryTags.Select(t => t.Tag.Name))));
+        CreateMap<InventoryDetailsViewModel, Inventory>();
+        CreateMap<Inventory, InventoryDetailsViewModel>();
     }
 }

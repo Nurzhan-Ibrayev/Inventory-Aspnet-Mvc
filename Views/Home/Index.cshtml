@@ -34,12 +34,39 @@
                                 @item.Description
                             </p>
                         </div>
+                        
                         <div class="card-footer bg-transparent border-top-0 pb-3">
-                            @* Stretched link делает всю карточку кликабельной по условию задачи *@
-                            <a asp-controller="Inventory" asp-action="Details" asp-route-id="@item.Id" 
-                               class="btn btn-outline-primary btn-sm w-100 stretched-link">
-                                Подробнее
-                            </a>
+                            <div class="d-flex gap-2">
+
+                                <a asp-controller="Item"
+                                   asp-action="Index"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-primary btn-sm w-100">
+                                    Open
+                                </a>
+
+                                <a asp-controller="Inventory"
+                                   asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-outline-warning btn-sm">
+                                    Edit
+                                </a>
+
+                                <form asp-controller="Inventory"
+                                      asp-action="Delete"
+                                      asp-route-id="@item.Id"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('Delete inventory?')">
+                                        Delete
+                                    </button>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
                 </div>

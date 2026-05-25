@@ -20,7 +20,10 @@ public class InventoryRepository:IInventoryRepository
 
     public async Task<Inventory?> GetByIdAsync(int id)
     {
-        return await _context.Inventories.FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Inventories
+            .Include(i => i.InventoryTags)
+            .ThenInclude(it => it.Tag)  // если есть навигация на Tag
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
     
     public async Task<Inventory> AddAsync(Inventory inventoryModel)

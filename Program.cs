@@ -5,6 +5,7 @@ using ItransitionProjectMVC.Data;
 using ItransitionProjectMVC.Models;
 using ItransitionProjectMVC.Repository;
 using ItransitionProjectMVC.Repository.Interfaces;
+using ItransitionProjectMVC.Services;
 using ItransitionProjectMVC.Sevices;
 using ItransitionProjectMVC.Sevices.Interfaces;
 
@@ -34,7 +35,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 builder.Services.AddAuthentication().AddJwtBearer();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
-
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IItemService, ItemService>();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

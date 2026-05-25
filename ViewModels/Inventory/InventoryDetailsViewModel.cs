@@ -29,7 +29,6 @@ public class InventoryDetailsViewModel
 
     public List<string> Tags { get; set; } = new();
 
-    public byte[] RowVersion { get; set; } = [];
 
 
     // ── Custom string fields (single-line) ──────────────────────────

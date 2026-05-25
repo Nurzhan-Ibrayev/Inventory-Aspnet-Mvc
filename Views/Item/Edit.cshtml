@@ -1,0 +1,262 @@
+@model ItransitionProjectMVC.ViewModels.Item.UpdateItemViewModel
+
+@{
+    ViewData["Title"] = "Edit Item";
+}
+
+<link rel="stylesheet" href="~/css/inventory.css" />
+
+<div class="row justify-content-center">
+
+    <div class="col-xl-10">
+
+        <div class="card card-modern">
+
+            <div class="card-body p-4 p-lg-5">
+
+                <div class="mb-5">
+
+                    <h1 class="page-title">
+                        Edit Item
+                    </h1>
+
+                    <p class="text-muted">
+                        Editing item <strong>@Model.CustomId</strong> in
+                        <strong>@Model.Inventory?.Title</strong>
+                    </p>
+
+                </div>
+
+                <form asp-action="Edit" method="post">
+
+                    @Html.AntiForgeryToken()
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger mb-4">
+                            <ul class="mb-0">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="InventoryId"/>
+                    <input type="hidden" asp-for="CustomId"/>
+
+                    <div class="row g-4">
+
+                        <!-- STRING FIELDS -->
+
+                        @if (Model.Inventory?.CustomString1State != "Hidden" && Model.Inventory?.CustomString1Name != null)
+                        {
+                            <div class="col-md-6">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomString1Name</label>
+                                    <input asp-for="CustomString1Value" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomString2State != "Hidden" && Model.Inventory?.CustomString2Name != null)
+                        {
+                            <div class="col-md-6">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomString2Name</label>
+                                    <input asp-for="CustomString2Value" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomString3State != "Hidden" && Model.Inventory?.CustomString3Name != null)
+                        {
+                            <div class="col-md-6">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomString3Name</label>
+                                    <input asp-for="CustomString3Value" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- MULTILINE -->
+
+                        @if (Model.Inventory?.CustomMultiline1State != "Hidden" && Model.Inventory?.CustomMultiline1Name != null)
+                        {
+                            <div class="col-12">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomMultiline1Name</label>
+                                    <textarea asp-for="CustomMultiline1Value" rows="4" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomMultiline2State != "Hidden" && Model.Inventory?.CustomMultiline2Name != null)
+                        {
+                            <div class="col-12">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomMultiline2Name</label>
+                                    <textarea asp-for="CustomMultiline2Value" rows="4" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomMultiline3State != "Hidden" && Model.Inventory?.CustomMultiline3Name != null)
+                        {
+                            <div class="col-12">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomMultiline3Name</label>
+                                    <textarea asp-for="CustomMultiline3Value" rows="4" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- NUMBER -->
+
+                        @if (Model.Inventory?.CustomInt1State != "Hidden" && Model.Inventory?.CustomInt1Name != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomInt1Name</label>
+                                    <input asp-for="CustomInt1Value" type="number" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomInt2State != "Hidden" && Model.Inventory?.CustomInt2Name != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomInt2Name</label>
+                                    <input asp-for="CustomInt2Value" type="number" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomInt3State != "Hidden" && Model.Inventory?.CustomInt3Name != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomInt3Name</label>
+                                    <input asp-for="CustomInt3Value" type="number" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- BOOLEAN -->
+
+                        @if (Model.Inventory?.CustomBool1State != "Hidden" && Model.Inventory?.CustomBool1Name != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="custom-field-card">
+                                    <div class="form-check custom-checkbox">
+                                        <input asp-for="CustomBool1Value" class="form-check-input"/>
+                                        <label class="form-check-label fw-semibold">@Model.Inventory.CustomBool1Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomBool2State != "Hidden" && Model.Inventory?.CustomBool2Name != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="custom-field-card">
+                                    <div class="form-check custom-checkbox">
+                                        <input asp-for="CustomBool2Value" class="form-check-input"/>
+                                        <label class="form-check-label fw-semibold">@Model.Inventory.CustomBool2Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomBool3State != "Hidden" && Model.Inventory?.CustomBool3Name != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="custom-field-card">
+                                    <div class="form-check custom-checkbox">
+                                        <input asp-for="CustomBool3Value" class="form-check-input"/>
+                                        <label class="form-check-label fw-semibold">@Model.Inventory.CustomBool3Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- LINKS -->
+
+                        @if (Model.Inventory?.CustomLink1State != "Hidden" && Model.Inventory?.CustomLink1Name != null)
+                        {
+                            <div class="col-12">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomLink1Name</label>
+                                    <input asp-for="CustomLink1Value" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomLink2State != "Hidden" && Model.Inventory?.CustomLink2Name != null)
+                        {
+                            <div class="col-12">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomLink2Name</label>
+                                    <input asp-for="CustomLink2Value" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.Inventory?.CustomLink3State != "Hidden" && Model.Inventory?.CustomLink3Name != null)
+                        {
+                            <div class="col-12">
+                                <div class="custom-field-card">
+                                    <label class="form-label fw-semibold">@Model.Inventory.CustomLink3Name</label>
+                                    <input asp-for="CustomLink3Value" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                    <!-- BUTTONS -->
+
+                    <div class="d-flex gap-3 mt-5">
+
+                        <button type="submit" class="btn btn-dark btn-modern flex-grow-1">
+                            Save Changes
+                        </button>
+
+                        <form asp-controller="Item"
+                              asp-action="Delete"
+                              method="post"
+                              onsubmit="return confirm('Delete this item?')"
+                              class="m-0">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id"/>
+                            <input type="hidden" name="inventoryId" value="@Model.InventoryId"/>
+                            <button type="submit" class="btn btn-outline-danger btn-modern">
+                                Delete
+                            </button>
+                        </form>
+
+                        <a asp-controller="Item"
+                           asp-action="Index"
+                           asp-route-inventoryId="@Model.InventoryId"
+                           class="btn btn-outline-secondary btn-modern">
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}

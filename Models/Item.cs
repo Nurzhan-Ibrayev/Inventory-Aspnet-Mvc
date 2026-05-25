@@ -17,8 +17,6 @@ public class Item
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [Timestamp]
-    public byte[] RowVersion { get; set; } = [];
 
     // ── Custom string values (single-line) ───────────────────────────
     [MaxLength(1024)] public string? CustomString1Value { get; set; }

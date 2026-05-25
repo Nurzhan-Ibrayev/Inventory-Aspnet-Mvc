@@ -27,6 +27,11 @@ public class InventoryService:IInventoryService
         var inventory = await _inventoryRepository.GetByIdAsync(id);
         return _mapper.Map<InventoryViewModel>(inventory);
     } 
+    public async Task<InventoryDetailsViewModel> GetByIdInventoryDetailsAsync(int id)
+    {
+        var inventory = await _inventoryRepository.GetByIdAsync(id);
+        return _mapper.Map<InventoryDetailsViewModel>(inventory);
+    } 
 
     public async Task CreateInventoryAsync(CreateInventoryViewModel inventoryViewModel, string userId)
     {

@@ -34,8 +34,11 @@ public class InventoryController:Controller
         }
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         await _inventoryService.CreateInventoryAsync(viewModel, userId);
-        return RedirectToAction("Index");
+        return RedirectToAction(
+            "Index",
+            "Home");
     }
+    
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Edit(int id)
@@ -58,7 +61,9 @@ public class InventoryController:Controller
         }
     
         await _inventoryService.UpdateInventoryAsync(viewModel, id);
-        return RedirectToAction("Index");
+        return RedirectToAction(
+            "Index",
+            "Home");
     }
 
     [HttpPost]
@@ -71,6 +76,8 @@ public class InventoryController:Controller
             return View();
         }
         await _inventoryService.DeleteInventoryAsync(id);
-        return RedirectToAction("Index");
+        return RedirectToAction(
+            "Index",
+            "Home");
     }
 }
